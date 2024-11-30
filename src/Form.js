@@ -5,6 +5,7 @@ import './Form.css';
 const Form = () => {
     const formRef = useRef(null);
     const [submitted, setSubmitted] = useState(false);
+    const [numHousehold, setNumHousehold] = useState(1);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -14,6 +15,29 @@ const Form = () => {
             setSubmitted(true);
         }
     };
+
+    const renderHouseholdMemberInputs = () => {
+        const householdMemberInputs = [];
+        for (let i = 1; i < numHousehold + 1; i++) {
+            householdMemberInputs.push(
+                <div className="householdMember">
+                    <div className="formField">
+                        <label htmlFor={`firstName_${i}`}>First Name:</label>
+                        <input id={`firstName_${i}`} name={`firstName_${i}`} type="text" />
+                    </div>
+                    <div className="formField">
+                        <label htmlFor={`lastName_${i}`}>Last Name:</label>
+                        <input id={`lastName_${i}`} name={`lastName_${i}`} type="text" />
+                    </div>
+                    <div className="formField">
+                        <label htmlFor={`canAttend_${i}`}>Will you be attending?</label>
+                        <input id={`canAttend_${i}`} name={`canAttend_${i}`} type="checkbox" />
+                    </div>
+                </div>
+            )
+        }
+        return householdMemberInputs;
+    }
 
     return (
         <div>
@@ -27,30 +51,9 @@ const Form = () => {
                         target="hidden-iframe"
                         onSubmit={handleSubmit}
                     >
-                        Household Member 1:
-                        <div className="householdMember">
-                            <div className="formField">
-                                <label htmlFor="firstName_1">First Name:</label>
-                                <input id="firstName_1" name="firstName_1" type="text" />
-                            </div>
-                            <div className="formField">
-                                <label htmlFor="lastName_1">Last Name:</label>
-                                <input id="lastName_1" name="lastName_1" type="text" />
-                            </div>
-                        </div>
+                        {renderHouseholdMemberInputs()}
 
-                        Household Member 2:
-                        <div className="householdMember">
-                            <div className="formField">
-                                <label htmlFor="firstName_1">First Name:</label>
-                                <input id="firstName_1" name="firstName_2" type="text" />
-                            </div>
-                            <div className="formField">
-                                <label htmlFor="lastName_1">Last Name:</label>
-                                <input id="lastName_1" name="lastName_2" type="text" />
-                            </div>
-                        </div>
-
+                        <button onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>Add Member</button>
                         <input type="submit" />
                     </form>
                 </div>
