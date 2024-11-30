@@ -6,6 +6,7 @@ const Form = () => {
     const formRef = useRef(null);
     const [submitted, setSubmitted] = useState(false);
     const [numHousehold, setNumHousehold] = useState(1);
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -31,13 +32,36 @@ const Form = () => {
                     </div>
                     <div className="formField">
                         <label htmlFor={`canAttend_${i}`}>Will you be attending?</label>
-                        <input id={`canAttend_${i}`} name={`canAttend_${i}`} type="checkbox" />
+                        <select name={`canAttend_${i}`} id={`canAttend_${i}`}>
+                            <option value="">Please select:</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
                     </div>
                 </div>
             )
         }
         return householdMemberInputs;
     }
+
+    const handleFormChange = () => {
+        const formData = new FormData(formRef.current);
+
+        const formValuesObj = {};
+        formData.forEach((value, key) => {
+            formValuesObj[key] = value;
+        });
+
+        let hasEmptyField = false;
+        Object.keys(formValuesObj).forEach(k => {
+            if (!formValuesObj[k]) {
+                hasEmptyField = true;
+            }
+        });
+
+        setIsSubmitDisabled(hasEmptyField);
+    }
+
 
     return (
         <div>
@@ -49,12 +73,13 @@ const Form = () => {
                         method="POST"
                         action="https://script.google.com/macros/s/AKfycbzobzNfK4Li79NCq4Rq-gwEI_3G0Nq7K3qj20hGC7Uws2W0XRqhAkXdE2wNKjV5855NEA/exec"
                         target="hidden-iframe"
+                        onChange={handleFormChange}
                         onSubmit={handleSubmit}
                     >
                         {renderHouseholdMemberInputs()}
 
                         <button onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>Add Member</button>
-                        <input type="submit" />
+                        <input type="submit" disabled={isSubmitDisabled} />
                     </form>
                 </div>
             ) : (
