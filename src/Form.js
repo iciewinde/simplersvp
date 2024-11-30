@@ -23,18 +23,31 @@ const Form = () => {
                     <form
                         ref={formRef}
                         method="POST"
-                        action="https://script.google.com/macros/s/AKfycbwsJtfPFMhPYiZlgkuD6dR0SNq_fC0rtz3JZPN7nAxsOiacYm-RUfE6D_TdaNHHiAoW8Q/exec"
+                        action="https://script.google.com/macros/s/AKfycbzobzNfK4Li79NCq4Rq-gwEI_3G0Nq7K3qj20hGC7Uws2W0XRqhAkXdE2wNKjV5855NEA/exec"
                         target="hidden-iframe"
                         onSubmit={handleSubmit}
                     >
+                        Household Member 1:
                         <div className="householdMember">
                             <div className="formField">
-                                <label htmlFor="firstName">First Name:</label>
-                                <input id="firstName" name="First Name" type="text" />
+                                <label htmlFor="firstName_1">First Name:</label>
+                                <input id="firstName_1" name="firstName_1" type="text" />
                             </div>
                             <div className="formField">
-                                <label htmlFor="lastName">Last Name:</label>
-                                <input id="lastName" name="Last Name" type="text" />
+                                <label htmlFor="lastName_1">Last Name:</label>
+                                <input id="lastName_1" name="lastName_1" type="text" />
+                            </div>
+                        </div>
+
+                        Household Member 2:
+                        <div className="householdMember">
+                            <div className="formField">
+                                <label htmlFor="firstName_1">First Name:</label>
+                                <input id="firstName_1" name="firstName_2" type="text" />
+                            </div>
+                            <div className="formField">
+                                <label htmlFor="lastName_1">Last Name:</label>
+                                <input id="lastName_1" name="lastName_2" type="text" />
                             </div>
                         </div>
 
