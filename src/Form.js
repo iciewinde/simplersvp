@@ -6,6 +6,7 @@ const Form = () => {
     const formRef = useRef(null);
     const [submitted, setSubmitted] = useState(false);
     const [numHousehold, setNumHousehold] = useState(1);
+    const [attendanceStatus, setAttendanceStatus] = useState({});
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
     const handleSubmit = (event) => {
@@ -17,11 +18,21 @@ const Form = () => {
         }
     };
 
+    const handleAttendanceChange = (i, value) => {
+        setAttendanceStatus(prevState => ({
+            ...prevState,
+            [i]: value,
+        }));
+    };
+
     const renderHouseholdMemberInputs = () => {
         const householdMemberInputs = [];
         for (let i = 1; i < numHousehold + 1; i++) {
+            const isAttending = attendanceStatus[i] === 'Yes';
+
             householdMemberInputs.push(
                 <div className="householdMember">
+                    Household Member #{i}
                     <div className="formField">
                         <label htmlFor={`firstName_${i}`}>First Name:</label>
                         <input id={`firstName_${i}`} name={`firstName_${i}`} type="text" />
@@ -32,12 +43,22 @@ const Form = () => {
                     </div>
                     <div className="formField">
                         <label htmlFor={`canAttend_${i}`}>Will you be attending?</label>
-                        <select name={`canAttend_${i}`} id={`canAttend_${i}`}>
+                        <select
+                            name={`canAttend_${i}`}
+                            id={`canAttend_${i}`}
+                            onChange={(e) => handleAttendanceChange(i, e.target.value)}
+                        >
                             <option value="">Please select:</option>
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
                         </select>
                     </div>
+                    {isAttending && (
+                        <div className="formField">
+                            <label htmlFor={`dietaryRestrictions_${i}`}>Dietary Restrictions:</label>
+                            <input id={`dietaryRestrictions_${i}`} name={`dietaryRestrictions_${i}`} type="text" />
+                        </div>
+                    )}
                 </div>
             )
         }
@@ -54,7 +75,7 @@ const Form = () => {
 
         let hasEmptyField = false;
         Object.keys(formValuesObj).forEach(k => {
-            if (!formValuesObj[k]) {
+            if (!k.includes('dietaryRestrictions') && !formValuesObj[k]) {
                 hasEmptyField = true;
             }
         });
@@ -78,8 +99,10 @@ const Form = () => {
                     >
                         {renderHouseholdMemberInputs()}
 
-                        <button onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>Add Member</button>
-                        <input type="submit" disabled={isSubmitDisabled} />
+                        <div className="formActions">
+                            <button className="formAction addMember" onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>Add Another Person</button>
+                            <input className="formAction submit" type="submit" disabled={isSubmitDisabled} />
+                        </div>
                     </form>
                 </div>
             ) : (

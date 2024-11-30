@@ -1,5 +1,5 @@
 .form {
-    width: 300px;
+    width: 350px;
 }
 
 .formField {
@@ -17,4 +17,32 @@
     input {
         height: 20px;
     }
+
+    select {
+        height: 30px;
+    }
+}
+
+.householdMember {
+    margin-bottom: 30px;
+}
+
+.formActions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formAction {
+    width: 50%;
+    height: 40px;
+}
+
+.addMember {
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.submit {
+    width: 100%;
 }
