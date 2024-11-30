@@ -1,0 +1,20 @@
+.form {
+    width: 300px;
+}
+
+.formField {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    margin-bottom: 6px;
+
+    label {
+        margin-right: 6px;
+    }
+
+    input {
+        height: 20px;
+    }
+}

@@ -1,8 +1,11 @@
+import Form from './Form'
+import styles from './App.css';
+
 function App() {
     return (
         <div className="App">
             <header className="App-header">
-                beepboop
+                <Form />
             </header>
         </div>
     );
