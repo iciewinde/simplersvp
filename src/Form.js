@@ -25,6 +25,10 @@ const Form = () => {
         }));
     };
 
+    const handleRemove = () => {
+        setNumHousehold(numHousehold - 1);
+    }
+
     const renderHouseholdMemberInputs = () => {
         const householdMemberInputs = [];
         for (let i = 1; i < numHousehold + 1; i++) {
@@ -32,7 +36,9 @@ const Form = () => {
 
             householdMemberInputs.push(
                 <div className="householdMember">
-                    Household Member #{i}
+                    <div className="formFieldHeader">
+                        {i === numHousehold && i > 1 ? <div className="headerSub"><span>Guest #{i}</span> <span onClick={handleRemove} className="remove">(remove)</span></div> : `Guest #${i}`}
+                    </div>
                     <div className="formField">
                         <label htmlFor={`firstName_${i}`}>First Name:</label>
                         <input id={`firstName_${i}`} name={`firstName_${i}`} type="text" />
@@ -42,15 +48,15 @@ const Form = () => {
                         <input id={`lastName_${i}`} name={`lastName_${i}`} type="text" />
                     </div>
                     <div className="formField">
-                        <label htmlFor={`canAttend_${i}`}>Will you be attending?</label>
+                        <label htmlFor={`canAttend_${i}`}>RSVP</label>
                         <select
                             name={`canAttend_${i}`}
                             id={`canAttend_${i}`}
                             onChange={(e) => handleAttendanceChange(i, e.target.value)}
                         >
-                            <option value="">Please select:</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                            <option value="">Please select</option>
+                            <option value="Yes">Will attend</option>
+                            <option value="No">Unable to attend</option>
                         </select>
                     </div>
                     {isAttending && (
@@ -62,6 +68,9 @@ const Form = () => {
                 </div>
             )
         }
+
+
+
         return householdMemberInputs;
     }
 
@@ -88,7 +97,8 @@ const Form = () => {
         <div>
             {!submitted ? (
                 <div className="form">
-                    <h5>Please fill in the following for each attending member of your household:</h5>
+                    <h4>RSVP</h4>
+                    <div className="description">Please fill in the information of all invited guests in your household:</div>
                     <form
                         ref={formRef}
                         method="POST"
@@ -100,7 +110,9 @@ const Form = () => {
                         {renderHouseholdMemberInputs()}
 
                         <div className="formActions">
-                            <button className="formAction addMember" onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>Add Another Person</button>
+                            <button className="formAction addMember" onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>
+                                + Add Another Guest
+                            </button>
                             <input className="formAction submit" type="submit" disabled={isSubmitDisabled} />
                         </div>
                     </form>

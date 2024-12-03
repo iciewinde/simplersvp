@@ -1,5 +1,45 @@
+@font-face {
+    font-family: 'Post';
+    src: local('Post'), url(./fonts/Post.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'StarsFromOurEyes';
+    src: local('StarsFromOurEyes'), url(./fonts/StarsFromOurEyes.ttf) format('truetype');
+}
+
 .form {
     width: 350px;
+}
+
+h4 {
+    margin-top: 16px;
+    margin-bottom: 0;
+    font-family: 'StarsFromOurEyes', sans-serif;
+}
+
+.description {
+    font-size: 22px;
+    margin-bottom: 24px;
+}
+
+.formFieldHeader {
+    margin-bottom: 12px;
+    font-size: 32px;
+    font-family: 'Post', sans-serif;
+}
+
+.headerSub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove {
+    font-size: 16px;
+    margin-left: 16px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .formField {
@@ -15,16 +55,21 @@
     }
 
     input {
-        height: 20px;
+        height: 24px;
     }
 
     select {
         height: 30px;
+        width: 50%;
+    }
+
+    option {
+        font-size: 14px;
     }
 }
 
 .householdMember {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .formActions {
@@ -39,10 +84,16 @@
 }
 
 .addMember {
-    margin-top: 10px;
     margin-bottom: 40px;
+    font-family: 'StarsFromOurEyes', sans-serif;
+    font-size: 14px;
+    padding-top: 8px;
+    width: 65%;
 }
 
 .submit {
     width: 100%;
+    font-family: 'StarsFromOurEyes', sans-serif;
+    font-weight: bold;
+    font-size: 22px;
 }
