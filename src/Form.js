@@ -118,7 +118,7 @@ const Form = () => {
                     </form>
                 </div>
             ) : (
-                <p>Thank you for your submission!</p>
+                <p className="thankyou">We've received your household's information.<br /><br />Thank you for RSVPing!</p>
             )}
 
             {/* Invisible iframe to handle the form response */}
