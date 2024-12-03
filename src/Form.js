@@ -97,8 +97,7 @@ const Form = () => {
         <div>
             {!submitted ? (
                 <div className="form">
-                    <h4>RSVP</h4>
-                    <div className="description">Please fill in the information of all invited guests in your household:</div>
+                    <div className="description">Please RSVP for each guest in your household:</div>
                     <form
                         ref={formRef}
                         method="POST"

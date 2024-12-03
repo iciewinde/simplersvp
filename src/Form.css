@@ -10,6 +10,7 @@
 
 .form {
     width: 350px;
+    padding: 0 12px;
 }
 
 h4 {
@@ -20,6 +21,7 @@ h4 {
 
 .description {
     font-size: 22px;
+    margin-top: 24px;
     margin-bottom: 24px;
 }
 
