@@ -81,6 +81,11 @@ h4 {
 .formAction {
     width: 50%;
     height: 40px;
+    cursor: pointer;
+
+    &:disabled {
+        cursor: default;
+    }
 }
 
 .addMember {
