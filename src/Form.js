@@ -48,7 +48,7 @@ const Form = () => {
                         <input id={`lastName_${i}`} name={`lastName_${i}`} type="text" />
                     </div>
                     <div className="formField">
-                        <label htmlFor={`canAttend_${i}`}>RSVP</label>
+                        <label htmlFor={`canAttend_${i}`}>RSVP:</label>
                         <select
                             name={`canAttend_${i}`}
                             id={`canAttend_${i}`}
