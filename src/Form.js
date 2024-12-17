@@ -4,17 +4,31 @@ import './Form.css';
 
 const Form = () => {
     const formRef = useRef(null);
-    const [submitted, setSubmitted] = useState(false);
+    const [submitted, setSubmitted] = useState('notSubmitted');
     const [numHousehold, setNumHousehold] = useState(1);
     const [attendanceStatus, setAttendanceStatus] = useState({});
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (formRef.current) {
-            formRef.current.submit();
-            setSubmitted(true);
+        const formData = new FormData(formRef.current);
+
+        try {
+            setSubmitted('loading');
+            setIsSubmitDisabled(true);
+            const response = await fetch(
+                "https://script.google.com/macros/s/AKfycbw1Cd-mmBEvq9mxLr9ooISqdYalaGvkS1uzzbmsc7Sr2YIyB34_EE5AKykS2KCyaqUfig/exec",
+                {
+                    method: "POST",
+                    body: formData,
+                    mode: "no-cors"
+                }
+            );
+
+            setSubmitted('success');
+        } catch (error) {
+            setSubmitted('error');
         }
     };
 
@@ -41,11 +55,11 @@ const Form = () => {
                     </div>
                     <div className="formField">
                         <label htmlFor={`firstName_${i}`}>First Name:</label>
-                        <input id={`firstName_${i}`} name={`firstName_${i}`} type="text" />
+                        <input id={`firstName_${i}`} name={`firstName_${i}`} type="text" disabled={submitted === 'loading'} />
                     </div>
                     <div className="formField">
                         <label htmlFor={`lastName_${i}`}>Last Name:</label>
-                        <input id={`lastName_${i}`} name={`lastName_${i}`} type="text" />
+                        <input id={`lastName_${i}`} name={`lastName_${i}`} type="text" disabled={submitted === 'loading'} />
                     </div>
                     <div className="formField">
                         <label htmlFor={`canAttend_${i}`}>RSVP:</label>
@@ -53,6 +67,7 @@ const Form = () => {
                             name={`canAttend_${i}`}
                             id={`canAttend_${i}`}
                             onChange={(e) => handleAttendanceChange(i, e.target.value)}
+                            disabled={submitted === 'loading'}
                         >
                             <option value="">Please select</option>
                             <option value="Yes">Will attend</option>
@@ -62,7 +77,7 @@ const Form = () => {
                     {isAttending && (
                         <div className="formField">
                             <label htmlFor={`dietaryRestrictions_${i}`}>Dietary Restrictions:</label>
-                            <input id={`dietaryRestrictions_${i}`} name={`dietaryRestrictions_${i}`} type="text" />
+                            <input id={`dietaryRestrictions_${i}`} name={`dietaryRestrictions_${i}`} type="text" disabled={submitted === 'loading'} />
                         </div>
                     )}
                 </div>
@@ -95,37 +110,30 @@ const Form = () => {
 
     return (
         <div>
-            {!submitted ? (
+            {submitted === 'notSubmitted' || submitted === 'loading' ? (
                 <div className="form">
                     <div className="description">Please RSVP for each guest in your household:</div>
                     <form
                         ref={formRef}
-                        method="POST"
-                        action="https://script.google.com/macros/s/AKfycbzobzNfK4Li79NCq4Rq-gwEI_3G0Nq7K3qj20hGC7Uws2W0XRqhAkXdE2wNKjV5855NEA/exec"
-                        target="hidden-iframe"
                         onChange={handleFormChange}
                         onSubmit={handleSubmit}
                     >
                         {renderHouseholdMemberInputs()}
 
                         <div className="formActions">
-                            <button className="formAction addMember" onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>
+                            <button className="formAction addMember" disabled={submitted === 'loading'} onClick={e => { e.preventDefault(); setNumHousehold(numHousehold + 1) }}>
                                 + Add Another Guest
                             </button>
-                            <input className="formAction submit" type="submit" disabled={isSubmitDisabled} />
+                            <input className="formAction submit" type="submit" disabled={isSubmitDisabled} value={submitted === 'loading' ? 'Loading...' : 'Submit'} />
                         </div>
                     </form>
                 </div>
             ) : (
-                <p className="thankyou">We've received your household's information.<br /><br />Thank you for RSVPing!</p>
+                <p className="thankyou">
+                    {submitted === 'success' ? <>We've received your household's information.<br /><br />Thank you for RSVPing!</> : ''}
+                    {submitted === 'error' ? <>Something went wrong with your submission.<br /><br />Please try again later.<br /><br />(if it still doesn't work later, please contact Mike or Chelsea)</> : ''}
+                </p>
             )}
-
-            {/* Invisible iframe to handle the form response */}
-            <iframe
-                name="hidden-iframe"
-                style={{ display: 'none' }}
-                title="hidden iframe"
-            ></iframe>
         </div>
     );
 };
