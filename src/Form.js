@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import './Form.css';
 
@@ -17,7 +17,7 @@ const Form = () => {
         try {
             setSubmitted('loading');
             setIsSubmitDisabled(true);
-            const response = await fetch(
+            await fetch(
                 "https://script.google.com/macros/s/AKfycbw1Cd-mmBEvq9mxLr9ooISqdYalaGvkS1uzzbmsc7Sr2YIyB34_EE5AKykS2KCyaqUfig/exec",
                 {
                     method: "POST",
@@ -49,7 +49,7 @@ const Form = () => {
             const isAttending = attendanceStatus[i] === 'Yes';
 
             householdMemberInputs.push(
-                <div className="householdMember">
+                <div className="householdMember" key={`householdMember_${i}`}>
                     <div className="formFieldHeader">
                         {i === numHousehold && i > 1 ? <div className="headerSub"><span>Guest #{i}</span> <span onClick={handleRemove} className="remove">(remove)</span></div> : `Guest #${i}`}
                     </div>
@@ -84,8 +84,6 @@ const Form = () => {
             )
         }
 
-
-
         return householdMemberInputs;
     }
 
@@ -94,7 +92,10 @@ const Form = () => {
 
         const formValuesObj = {};
         formData.forEach((value, key) => {
-            formValuesObj[key] = value;
+            const guestNum = parseInt(key.split('_')[1], 10)
+            if (guestNum <= numHousehold) {
+                formValuesObj[key] = value;
+            }
         });
 
         let hasEmptyField = false;
@@ -107,6 +108,10 @@ const Form = () => {
         setIsSubmitDisabled(hasEmptyField);
     }
 
+    useEffect(() => {
+        handleFormChange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [numHousehold]);
 
     return (
         <div>
